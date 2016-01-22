@@ -1,8 +1,8 @@
 package com.iscas.pminer.entity;
 
-import java.util.List;
-
 import org.mongodb.morphia.annotations.Embedded;
+
+import java.util.List;
 
 /**
  * Embedded office record entity of person profile.

@@ -1,13 +1,12 @@
 package com.iscas.pminer.service;
 
-import java.io.File;
-import java.net.UnknownHostException;
-
+import com.iscas.pminer.entity.Profile;
+import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
-import com.iscas.pminer.entity.Profile;
-import com.mongodb.MongoClient;
+import java.io.File;
+import java.net.UnknownHostException;
 
 public class MongoDBRiver {
     private MongoClient mongoClient;

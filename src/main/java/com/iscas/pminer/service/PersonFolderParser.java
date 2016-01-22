@@ -1,16 +1,15 @@
 package com.iscas.pminer.service;
 
+import com.iscas.pminer.entity.OfficeRecord;
+import com.iscas.pminer.entity.Profile;
+import org.apache.commons.io.IOUtils;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
-
-import org.apache.commons.io.IOUtils;
-
-import com.iscas.pminer.entity.OfficeRecord;
-import com.iscas.pminer.entity.Profile;
 
 public class PersonFolderParser {
     private File personFolder;

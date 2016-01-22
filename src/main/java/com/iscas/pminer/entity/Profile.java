@@ -1,12 +1,12 @@
 package com.iscas.pminer.entity;
 
-import java.util.Date;
-import java.util.List;
-
 import org.mongodb.morphia.annotations.Embedded;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 import org.mongodb.morphia.annotations.Indexed;
+
+import java.util.Date;
+import java.util.List;
 
 /**
  * Person profile.

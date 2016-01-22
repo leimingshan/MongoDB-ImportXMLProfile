@@ -1,20 +1,15 @@
 package com.iscas.pminer.service;
 
-import java.io.File;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.List;
-
+import com.iscas.pminer.entity.*;
 import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
 
-import com.iscas.pminer.entity.OfficeRecord;
-import com.iscas.pminer.entity.Post;
-import com.iscas.pminer.entity.Profile;
-import com.iscas.pminer.entity.StudyRecord;
-import com.iscas.pminer.entity.Tuple;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.List;
 
 public class XmlParser {
 
