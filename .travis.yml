@@ -12,3 +12,5 @@ jdk:
   - oraclejdk8
   - oraclejdk7
 
+after_success:
+  - coveralls
