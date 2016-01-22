@@ -1,3 +1,4 @@
+sudo: false
 language: java
 
 before_cache:
@@ -11,6 +12,11 @@ cache:
 jdk:
   - oraclejdk8
   - oraclejdk7
+  - openjdk7
+
+before_install:
+  - export TZ=Asia/Shanghai
+  - pip install codecov
 
 after_success:
-  - coveralls
+  - bash <(curl -s https://codecov.io/bash)
