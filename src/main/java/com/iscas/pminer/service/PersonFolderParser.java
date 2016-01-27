@@ -11,21 +11,32 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+/**
+ * Parse one person profile folder and get basic infos.
+ * @author Mingshan Lei
+ * @since 0.1
+ */
 public class PersonFolderParser {
     private File personFolder;
     private Profile profile;
 
-    // 必须使用传参构造函数
+    /**
+     * Constructor with params.
+     * @param folder person profile folder
+     */
     public PersonFolderParser(File folder) {
+        // This profile folder should contains source xml and txt.
+        // Photo in jpeg format is also required normally.
         // folder 必须是个人信息的文件夹，里面还有xml和txt文件，正常情况下还要有jpg文件
         this.personFolder = folder;
     }
 
     public Profile getProfile() {
-        if (parse())
+        if (parse()) {
             return profile;
-        else
+        } else {
             return null;
+        }
     }
 
     public void setProfile(Profile profile) {
@@ -33,18 +44,20 @@ public class PersonFolderParser {
     }
 
     private boolean parse() {
-        if (!personFolder.isDirectory())
+        if (!personFolder.isDirectory()) {
             return false;
+        }
 
         File[] personFiles = personFolder.listFiles();
 
         File xmlFile = null;
         File picFile = null;
+
         @SuppressWarnings("unused") File txtFile = null; // not used by now
 
         for (int k = 0; k < personFiles.length; k++) {
             File file = personFiles[k];
-            // 处理所有后缀为.xml的数据文件
+
             if (file.getName().endsWith(".xml")) {
                 xmlFile = file;
             } else if (file.getName().endsWith(".jpg") || file.getName().endsWith(".bmp") || file
@@ -62,8 +75,9 @@ public class PersonFolderParser {
 
         // 先解析xml文件，获取该人物的基本履历数据
         profile = new XmlParser(xmlFile).getProfile();
-        if (profile == null)
+        if (profile == null) {
             return false;
+        }
 
         // 重要：设置唯一Id
         profile.setId(personFolder.getName());
