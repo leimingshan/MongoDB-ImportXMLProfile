@@ -7,11 +7,17 @@ import java.io.*;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * Read chinese family names from text file.
+ * Stored them inset for further judgement.
+ * @author Mingshan Lei
+ * @since 0.1
+ */
 public class FamilyNamesReader {
 
     private static final Logger logger = LoggerFactory.getLogger(FamilyNamesReader.class);
 
-    private Set<String> familyNameSet = new HashSet<String>();
+    private Set<String> familyNameSet = new HashSet<>();
 
     private static FamilyNamesReader instance = new FamilyNamesReader();
 
@@ -19,48 +25,63 @@ public class FamilyNamesReader {
         return instance;
     }
 
+    private static final int BYTES_PER_CN_CHAR_IN_UTF8 = 3;
+
+    private static final int MIN_NAME_LENGTH = 2;
+
+    private static final int MAX_NAME_LENGTH = 5;
+
+    /**
+     * Private constructor.
+     */
     private FamilyNamesReader() {
-        //初始化读取百家姓文件
+        // Initialize reading family name set from text file.
         InputStream input =
             FamilyNamesReader.class.getClassLoader().getResourceAsStream("family-names.txt");
-        BufferedReader bufferReader = null;
-        logger.info("Read family-names.txt......");
+        logger.info("Reading family-names.txt......");
 
-        String lineString = null;
+        String lineString;
         try {
-            bufferReader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
+            BufferedReader bufferReader = new BufferedReader(new InputStreamReader(input, "UTF-8"));
             while ((lineString = bufferReader.readLine()) != null) {
-                String[] familyNames = lineString.split(" ");
-                for (String name : familyNames) {
+                for (String name : lineString.split(" ")) {
                     familyNameSet.add(name);
                 }
             }
             bufferReader.close();
         } catch (UnsupportedEncodingException e) {
-            // TODO Auto-generated catch block
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
         }
-        logger.info("Read family-names.txt finished.");
+        logger.info("Reading family-names.txt finished.");
     }
 
+    /**
+     * Check whether one string of name satisfy common style.
+     * @param name
+     * @return whether the name string passed common name style check.
+     */
     public boolean checkName(String name) {
         String familyName = name.substring(0, 1);
         if (familyNameSet.contains(familyName)) {
-            //还需要校验中文名字的长度
-            //utf-8编码中一个中文字符占3个字节
             try {
-                if (name.getBytes("utf-8").length > 15 || name.getBytes("utf-8").length < 6)
+                // check the name length
+                // in utf-8 encoding one zh_CN character takes 3 bytes: utf-8编码中一个中文字符占3个字节
+                if (name.getBytes("utf-8").length > MAX_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8
+                    || name.getBytes("utf-8").length
+                    < MIN_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8) {
                     return false;
-                else
+                } else {
                     return true;
+                }
             } catch (UnsupportedEncodingException e) {
-                // TODO Auto-generated catch block
                 e.printStackTrace();
+                logger.error(e.getMessage());
                 return false;
             }
-        } else
+        } else {
             return false;
+        }
     }
 }
