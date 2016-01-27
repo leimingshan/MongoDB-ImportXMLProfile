@@ -63,6 +63,9 @@ public class FamilyNamesReader {
      * @return whether the name string passed common name style check.
      */
     public boolean checkName(String name) {
+        if (name == null || name.isEmpty()) {
+            return false;
+        }
         String familyName = name.substring(0, 1);
         if (familyNameSet.contains(familyName)) {
             try {

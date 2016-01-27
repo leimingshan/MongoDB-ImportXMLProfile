@@ -80,7 +80,7 @@ public class MongoDBRiver {
 
         Profile profile = new PersonFolderParser(personFolder).getProfile();
         if (profile == null) {
-            System.err.println("Error: Cound not parse " + personFolder.getName());
+            System.err.println("Error: Could not parse " + personFolder.getName());
         } else {
             // 保存当前实体对象到数据库
             dataStore.save(profile);
