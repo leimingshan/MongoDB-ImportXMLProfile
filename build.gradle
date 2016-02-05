@@ -1,5 +1,5 @@
 group 'com.iscas.pminer'
-version '1.0-SNAPSHOT'
+version '1.0'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
@@ -17,6 +17,7 @@ dependencies {
     compile 'dom4j:dom4j:1.6.1'
     compile 'org.slf4j:slf4j-api:1.7.13'
     compile 'org.slf4j:slf4j-log4j12:1.7.13'
+    testCompile "org.mockito:mockito-core:1.+"
     testCompile group: 'junit', name: 'junit', version: '4.12'
 }
 

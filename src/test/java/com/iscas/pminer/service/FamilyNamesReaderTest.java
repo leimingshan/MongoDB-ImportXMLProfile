@@ -22,8 +22,9 @@ public class FamilyNamesReaderTest {
     public void testCheckName() throws Exception {
         FamilyNamesReader reader = FamilyNamesReader.getInstance();
         assertTrue(reader.checkName("李阳"));
-        assertFalse(reader.checkName(""));
         assertTrue(reader.checkName("赵匡胤"));
+
+        assertFalse(reader.checkName(""));
         assertFalse(reader.checkName("太长的姓名"));
         assertFalse(reader.checkName("的好"));
     }
