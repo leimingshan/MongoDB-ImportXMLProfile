@@ -102,7 +102,7 @@ public class PersonFolderParser {
             }
         }
 
-        ProfileLevelJudge judgeLevel = new ProfileLevelJudge();
+        ProfileLevelHelper judgeLevel = new ProfileLevelHelper();
         // 判断该人履历信息的档案级别
         int level = judgeLevel.getLevel(profile);
         profile.setLevel(level);
