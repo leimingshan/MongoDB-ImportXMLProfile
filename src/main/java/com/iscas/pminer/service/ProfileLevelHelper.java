@@ -68,7 +68,7 @@ public class ProfileLevelHelper {
      * @param info
      * @return whether basic info satisfies the rules.
      */
-    public final boolean checkBasicInfo(String info) {
+    private final boolean checkBasicInfo(String info) {
         if (info == null || info.equals("") || info.equals("-")
             || info.equals("--") || info.equals("---")) {
             return false;
