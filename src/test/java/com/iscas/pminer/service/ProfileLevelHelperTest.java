@@ -28,10 +28,18 @@ public class ProfileLevelHelperTest {
 
         when(testProfile1.getName()).thenReturn("");
         assertEquals(helper.getLevel(testProfile1), 3);
+        when(testProfile1.getName()).thenReturn("-");
+        assertEquals(helper.getLevel(testProfile1), 3);
+        when(testProfile1.getName()).thenReturn("--");
+        assertEquals(helper.getLevel(testProfile1), 3);
+        when(testProfile1.getName()).thenReturn("---");
+        assertEquals(helper.getLevel(testProfile1), 3);
 
         Profile testProfile2 = mock(Profile.class);
         when(testProfile2.getName()).thenReturn("张三");
         when(testProfile2.getGender()).thenReturn("男");
+        assertEquals(helper.getLevel(testProfile2), 3);
+        when(testProfile2.getGender()).thenReturn("");
         assertEquals(helper.getLevel(testProfile2), 3);
 
         Profile testProfile3 = mock(Profile.class);
