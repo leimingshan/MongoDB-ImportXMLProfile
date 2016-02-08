@@ -27,5 +27,7 @@ public class FamilyNamesReaderTest {
         assertFalse(reader.checkName(""));
         assertFalse(reader.checkName("太长的姓名"));
         assertFalse(reader.checkName("的好"));
+        assertFalse(reader.checkName("李"));
+        assertFalse(reader.checkName("李太白太白"));
     }
 }

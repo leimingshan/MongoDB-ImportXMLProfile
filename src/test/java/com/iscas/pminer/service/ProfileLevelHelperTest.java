@@ -10,7 +10,8 @@ import static org.junit.Assert.*;
 /**
  * Test for ProfileLevelHelper
  * @author Mingshan Lei
- * @since 2016/2/5
+ * @since 0.9
+ * Created by LMSH on 2016/2/5.
  */
 public class ProfileLevelHelperTest {
 
@@ -49,6 +50,9 @@ public class ProfileLevelHelperTest {
         when(testProfile3.getAge()).thenReturn("30");
         when(testProfile3.getBirthProvince()).thenReturn("河南省");
         assertEquals(helper.getLevel(testProfile3), 2);
+
+        when(testProfile3.getBirthProvince()).thenReturn(null);
+        assertEquals(helper.getLevel(testProfile3), 3);
     }
 
 }
