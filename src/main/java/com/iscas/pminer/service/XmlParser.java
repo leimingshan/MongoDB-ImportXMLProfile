@@ -35,7 +35,6 @@ public class XmlParser {
         }
     }
 
-    @SuppressWarnings("unchecked")
     private boolean parse() {
         if (xmlFile == null)
             return false;
@@ -44,9 +43,8 @@ public class XmlParser {
         Document document = null;
         try {
             document = sr.read(xmlFile);
-        } catch (DocumentException e1) {
-            // TODO Auto-generated catch block
-            e1.printStackTrace();
+        } catch (DocumentException e) {
+            e.printStackTrace();
         }
         Element root = document.getRootElement();
 

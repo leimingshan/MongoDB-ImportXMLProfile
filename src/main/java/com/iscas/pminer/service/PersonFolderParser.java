@@ -17,6 +17,7 @@ import java.util.List;
  * @since 0.1
  */
 public class PersonFolderParser {
+
     private File personFolder;
     private Profile profile;
 
@@ -39,10 +40,6 @@ public class PersonFolderParser {
         }
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
     private boolean parse() {
         if (!personFolder.isDirectory()) {
             return false;
@@ -53,7 +50,8 @@ public class PersonFolderParser {
         File xmlFile = null;
         File picFile = null;
 
-        @SuppressWarnings("unused") File txtFile = null; // not used by now
+        @SuppressWarnings("unused")
+        File txtFile = null; // not used by now
 
         for (int k = 0; k < personFiles.length; k++) {
             File file = personFiles[k];
@@ -102,9 +100,9 @@ public class PersonFolderParser {
             }
         }
 
-        ProfileLevelHelper judgeLevel = new ProfileLevelHelper();
+        ProfileLevelHelper levelHelper = new ProfileLevelHelper();
         // 判断该人履历信息的档案级别
-        int level = judgeLevel.getLevel(profile);
+        int level = levelHelper.getLevel(profile);
         profile.setLevel(level);
 
         // 处理该人的工作记录，找出最新的工作记录
