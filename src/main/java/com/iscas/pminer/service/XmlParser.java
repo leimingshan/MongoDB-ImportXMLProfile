@@ -11,6 +11,11 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * Profile XML format file parser and analyzer.
+ * @author Mingshan Lei
+ * @since 0.1
+ */
 public class XmlParser {
 
     private File xmlFile = null;
@@ -23,17 +28,15 @@ public class XmlParser {
     }
 
     public Profile getProfile() {
-        if (parse())
+        if (parse()) {
             return profile;
-        else
+        } else {
             return null;
+        }
     }
 
-    public void setProfile(Profile profile) {
-        this.profile = profile;
-    }
-
-    @SuppressWarnings("unchecked") private boolean parse() {
+    @SuppressWarnings("unchecked")
+    private boolean parse() {
         if (xmlFile == null)
             return false;
 
@@ -207,15 +210,16 @@ public class XmlParser {
         return true;
     }
 
-    public boolean isYearLegal(String year) {
+    public final static boolean isYearLegal(String year) {
         if (year.equals("-")) // "-" means this year or no data here and will be processed later
             return true;
         Calendar c = Calendar.getInstance();
         int currentYear = c.get(Calendar.YEAR);
         int yearInt = Integer.parseInt(year);
-        if (yearInt > currentYear || yearInt < 1900)
+        if (yearInt > currentYear || yearInt < 1900) {
             return false;
-        else
+        } else {
             return true;
+        }
     }
 }
