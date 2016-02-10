@@ -6,34 +6,30 @@ import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
 import java.io.File;
-import java.net.UnknownHostException;
 
+/**
+ * MongoDBRiver for profile import and save.
+ * @author Mingshan Lei
+ * @since 0.1
+ */
 public class MongoDBRiver {
-    private MongoClient mongoClient;
+
     private Datastore dataStore;
 
-    public MongoDBRiver() throws UnknownHostException {
-        mongoClient = new MongoClient("localhost");
-        Morphia morphia = new Morphia();
-        dataStore = morphia.createDatastore(mongoClient, "pminer");
+    public MongoDBRiver() {
+        final Morphia morphia = new Morphia();
 
         morphia.map(Profile.class);
 
+        dataStore = morphia.createDatastore(new MongoClient(), "pminer");
         dataStore.ensureIndexes(); // 加入针对_id和姓名的索引
+
         // 加入其他用于查询关系和统计等信息的索引
         dataStore.ensureIndex(Profile.class, "officeRecord.tupleList.unitNameList");
         dataStore.ensureIndex(Profile.class, "latestOfficeRecord.province");
         dataStore.ensureIndex(Profile.class, "latestOfficeRecord.rank");
         dataStore.ensureIndex(Profile.class, "studyRecord.universityName");
         dataStore.ensureIndex(Profile.class, "birthProvince");
-    }
-
-    public MongoClient getMongoClient() {
-        return mongoClient;
-    }
-
-    public void setMongoClient(MongoClient mongoClient) {
-        this.mongoClient = mongoClient;
     }
 
     public Datastore getDataStore() {
