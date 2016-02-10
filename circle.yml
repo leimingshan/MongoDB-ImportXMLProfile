@@ -2,7 +2,5 @@
 machine:
   timezone:
     Asia/Shanghai
-  java:
-    version: oraclejdk8
   services:
     - mongodb

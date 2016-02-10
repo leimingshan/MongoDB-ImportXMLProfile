@@ -4,6 +4,10 @@ version '1.0'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 
+jacoco {
+    toolVersion "0.7.5.201505241946"
+}
+
 sourceCompatibility = 1.7
 
 repositories {
