@@ -15,7 +15,13 @@ import java.util.Set;
  */
 public class FamilyNamesReader {
 
-    private static final Logger logger = LoggerFactory.getLogger(FamilyNamesReader.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(FamilyNamesReader.class);
+
+    private static final int BYTES_PER_CN_CHAR_IN_UTF8 = 3;
+
+    private static final int MIN_NAME_LENGTH = 2;
+
+    private static final int MAX_NAME_LENGTH = 5;
 
     private Set<String> familyNameSet = new HashSet<>();
 
@@ -25,12 +31,6 @@ public class FamilyNamesReader {
         return instance;
     }
 
-    private static final int BYTES_PER_CN_CHAR_IN_UTF8 = 3;
-
-    private static final int MIN_NAME_LENGTH = 2;
-
-    private static final int MAX_NAME_LENGTH = 5;
-
     /**
      * Private constructor.
      */
@@ -38,7 +38,7 @@ public class FamilyNamesReader {
         // Initialize reading family name set from text file.
         InputStream input =
             FamilyNamesReader.class.getClassLoader().getResourceAsStream("family-names.txt");
-        logger.info("Reading family-names.txt......");
+        LOGGER.info("Reading family-names.txt......");
 
         String lineString;
         try {
@@ -50,11 +50,11 @@ public class FamilyNamesReader {
             }
             bufferReader.close();
         } catch (UnsupportedEncodingException e) {
-            e.printStackTrace();
+            LOGGER.info("FamilyNamesReader constructor exception.", e);
         } catch (IOException e) {
-            e.printStackTrace();
+            LOGGER.info("FamilyNamesReader constructor exception.", e);
         }
-        logger.info("Reading family-names.txt finished.");
+        LOGGER.info("Reading family-names.txt finished.");
     }
 
     /**
@@ -79,12 +79,10 @@ public class FamilyNamesReader {
                     return true;
                 }
             } catch (UnsupportedEncodingException e) {
-                e.printStackTrace();
-                logger.error(e.getMessage());
+                LOGGER.info("Check name exception.", e);
                 return false;
             }
-        } else {
-            return false;
         }
+        return false;
     }
 }

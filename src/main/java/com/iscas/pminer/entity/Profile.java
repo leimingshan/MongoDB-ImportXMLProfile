@@ -45,10 +45,6 @@ import java.util.List;
 
     private Date timestamp; // time stamp for insert time or update time
 
-    public Profile() {
-
-    }
-
     public String getId() {
         return id;
     }
