@@ -9,7 +9,7 @@ import java.util.Set;
 
 /**
  * Read chinese family names from text file.
- * Stored them inset for further judgement.
+ * Store them in set for further judgement.
  * @author Mingshan Lei
  * @since 0.1
  */
@@ -26,10 +26,6 @@ public class FamilyNamesReader {
     private Set<String> familyNameSet = new HashSet<>();
 
     private static FamilyNamesReader instance = new FamilyNamesReader();
-
-    public static FamilyNamesReader getInstance() {
-        return instance;
-    }
 
     /**
      * Private constructor.
@@ -57,6 +53,10 @@ public class FamilyNamesReader {
         LOGGER.info("Reading family-names.txt finished.");
     }
 
+    public static FamilyNamesReader getInstance() {
+        return instance;
+    }
+
     /**
      * Check whether one string of name satisfy common style.
      * @param name
@@ -67,21 +67,20 @@ public class FamilyNamesReader {
             return false;
         }
         String familyName = name.substring(0, 1);
+
+        int byteSize = 0;
+        try {
+            byteSize = name.getBytes("utf-8").length;
+        } catch (UnsupportedEncodingException e) {
+            LOGGER.info("Check name exception.", e);
+            return false;
+        }
+
         if (familyNameSet.contains(familyName)) {
-            try {
-                // check the name length
-                // in utf-8 encoding one zh_CN character takes 3 bytes: utf-8编码中一个中文字符占3个字节
-                if (name.getBytes("utf-8").length > MAX_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8
-                    || name.getBytes("utf-8").length
-                    < MIN_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8) {
-                    return false;
-                } else {
-                    return true;
-                }
-            } catch (UnsupportedEncodingException e) {
-                LOGGER.info("Check name exception.", e);
-                return false;
-            }
+            // check the name length
+            // in utf-8 encoding one zh_CN character takes 3 bytes: utf-8编码中一个中文字符占3个字节
+            return !(byteSize > MAX_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8
+                || byteSize < MIN_NAME_LENGTH * BYTES_PER_CN_CHAR_IN_UTF8);
         }
         return false;
     }

@@ -3,6 +3,8 @@ package com.iscas.pminer.service;
 import com.iscas.pminer.entity.OfficeRecord;
 import com.iscas.pminer.entity.Profile;
 import org.apache.commons.io.IOUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -17,6 +19,8 @@ import java.util.List;
  * @since 0.1
  */
 public class PersonFolderParser {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(PersonFolderParser.class);
 
     private File personFolder;
     private Profile profile;
@@ -67,7 +71,7 @@ public class PersonFolderParser {
         }
         // 若该文件夹内没有最主要的xml数据文件，则舍弃该文件夹
         if (xmlFile == null) {
-            System.err.println("Error: " + personFolder.getName() + " is not a person folder!");
+            LOGGER.error("Error: " + personFolder.getName() + " is not a person folder!");
             return false;
         }
 
@@ -88,7 +92,7 @@ public class PersonFolderParser {
                 FileInputStream fs = new FileInputStream(picFile);
                 profile.setImage(IOUtils.toByteArray(fs)); // 图片文件转换为字节流存储在数据库中
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.info("Read image file IOException.", e);
             }
         } else {
             // 该人没有图片数据，则使用empty.png图片文件
@@ -96,7 +100,7 @@ public class PersonFolderParser {
                 profile.setImage(IOUtils.toByteArray(
                     this.getClass().getClassLoader().getResourceAsStream("empty.png")));
             } catch (IOException e) {
-                e.printStackTrace();
+                LOGGER.info("Read image file IOException.", e);
             }
         }
 
@@ -107,11 +111,11 @@ public class PersonFolderParser {
 
         // 处理该人的工作记录，找出最新的工作记录
         List<OfficeRecord> officeRecordList = profile.getOfficeRecord();
-        if (officeRecordList != null && officeRecordList.size() != 0) {
+        if (officeRecordList != null && !officeRecordList.isEmpty()) {
             OfficeRecord item = officeRecordList.get(officeRecordList.size() - 1);
             String endDate = item.getEndDate();
             if (endDate.length() < 6)
-                System.out.println("------无详细结束日期");
+                LOGGER.info("Date format error: 无详细结束日期.");
             else {
                 String endYear = endDate.substring(0, 4);
 

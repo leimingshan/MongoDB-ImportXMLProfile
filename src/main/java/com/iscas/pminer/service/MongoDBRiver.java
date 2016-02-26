@@ -4,6 +4,8 @@ import com.iscas.pminer.entity.Profile;
 import com.mongodb.MongoClient;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 
@@ -13,6 +15,8 @@ import java.io.File;
  * @since 0.1
  */
 public class MongoDBRiver {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(MongoDBRiver.class);
 
     private Datastore dataStore;
 
@@ -46,7 +50,7 @@ public class MongoDBRiver {
         File[] dirList = dir.listFiles();        // PersonFile_1..n folders
         for (int j = 0; j < dirList.length; j++) {
             if (!dirList[j].isDirectory()) {     // dirList[j] should be PersonFile_1 or 2, etc.
-                System.out.println("Error: " + dirList[j].getName() + " is not a category folder!");
+                LOGGER.error("Error: " + dirList[j].getName() + " is not a category folder!");
                 continue;
             }
             File[] personFolders = dirList[j].listFiles();//person folders
@@ -55,32 +59,32 @@ public class MongoDBRiver {
 
                 File personFolder = personFolders[i];
 
-                System.out.println("Scan folder: " + personFolder.getName());
+                LOGGER.info("Scan folder: " + personFolder.getName());
 
                 Profile profile = new PersonFolderParser(personFolder).getProfile();
                 if (profile == null) {
-                    System.err.println("Error: Cound not parse " + personFolder.getName());
+                    LOGGER.error("Error: Cound not parse " + personFolder.getName());
                 } else {
                     // 保存当前实体对象到数据库
                     dataStore.save(profile);
                 }
             }
         }
-        System.out.println("Scan Completed!");
+        LOGGER.info("Scan Completed!");
     }
 
     public void importPersonFolder(String personFolderPath) {
         // scan person folders
         File personFolder = new File(personFolderPath);
-        System.out.println("Scan folder: " + personFolder.getName());
+        LOGGER.info("Scan folder: " + personFolder.getName());
 
         Profile profile = new PersonFolderParser(personFolder).getProfile();
         if (profile == null) {
-            System.err.println("Error: Could not parse " + personFolder.getName());
+            LOGGER.error("Error: Could not parse " + personFolder.getName());
         } else {
             // 保存当前实体对象到数据库
             dataStore.save(profile);
         }
-        System.out.println("Scan Completed!");
+        LOGGER.info("Scan Completed!");
     }
 }
