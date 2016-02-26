@@ -16,10 +16,6 @@ public class ProfileLevelHelper {
     private static final int LEVEL_TWO = 2;
     private static final int LEVEL_ONE = 1;
 
-    public ProfileLevelHelper() {
-
-    }
-
     public ProfileLevelHelper(Profile profile) {
         this.profile = profile;
     }
@@ -68,9 +64,9 @@ public class ProfileLevelHelper {
      * @param info
      * @return whether basic info satisfies the rules.
      */
-    private final boolean checkBasicInfo(String info) {
-        if (info == null || info.equals("") || info.equals("-")
-            || info.equals("--") || info.equals("---")) {
+    private static final boolean checkBasicInfo(String info) {
+        if (info == null || "".equals(info) || "-".equals(info)
+            || "--".equals(info) || "---".equals(info)) {
             return false;
         }
         return true;

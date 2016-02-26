@@ -5,6 +5,8 @@ import org.dom4j.Document;
 import org.dom4j.DocumentException;
 import org.dom4j.Element;
 import org.dom4j.io.SAXReader;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -17,6 +19,8 @@ import java.util.List;
  * @since 0.1
  */
 public class XmlParser {
+
+    private static final Logger LOGGER = LoggerFactory.getLogger(XmlParser.class);
 
     private File xmlFile = null;
 
@@ -44,7 +48,8 @@ public class XmlParser {
         try {
             document = sr.read(xmlFile);
         } catch (DocumentException e) {
-            e.printStackTrace();
+            LOGGER.info("XML file read exception.", e);
+            return false;
         }
         Element root = document.getRootElement();
 
@@ -82,7 +87,7 @@ public class XmlParser {
         }
 
         //学习记录
-        List<StudyRecord> studyRecordList = new ArrayList<StudyRecord>();
+        List<StudyRecord> studyRecordList = new ArrayList<>();
         List<Element> studyRecordArray = e.element("study_record_array").elements("study_record");
 
         for (Element element : studyRecordArray) {
@@ -105,22 +110,22 @@ public class XmlParser {
             record.setDiploma(element.elementText("diploma"));
             record.setDegree(element.elementText("degree"));
 
-            if (category.equals("current")) {
+            if ("current".equals(category)) {
                 //当前的学习记录，没有开始和结束时间
                 //存储在list的开头
                 studyRecordList.add(record);
 
-            } else if (category.equals("previous")) {
+            } else if ("previous".equals(category)) {
                 //之前的学习记录：包含开始和结束时间
                 //可能有多个之前的学习记录，按照时间先后排序
                 List<Element> dates = element.elements("date");
                 for (Element date1 : dates) {
                     String category1 = date1.attributeValue("category");
 
-                    if (category1.equals("start")) {
+                    if ("start".equals(category1)) {
                         record.setStartDate(
                             date1.elementText("year") + "-" + date1.elementText("month"));
-                    } else if (category1.equals("end")) {
+                    } else if ("end".equals(category1)) {
                         record.setEndDate(
                             date1.elementText("year") + "-" + date1.elementText("month"));
                     }
@@ -132,7 +137,7 @@ public class XmlParser {
         profile.setStudyRecord(studyRecordList);
 
         //工作记录
-        List<OfficeRecord> officeRecordList = new ArrayList<OfficeRecord>();
+        List<OfficeRecord> officeRecordList = new ArrayList<>();
         Element officeRecord = e.element("office_record_array");
         List<Element> officeRecordArray = officeRecord.elements("office_record");
 
@@ -146,10 +151,10 @@ public class XmlParser {
                 if (!isYearLegal(date1.elementText("year")))
                     continue a;
 
-                if (category1.equals("start")) {
+                if ("start".equals(category1)) {
                     record
                         .setStartDate(date1.elementText("year") + "-" + date1.elementText("month"));
-                } else if (category1.equals("end")) {
+                } else if ("end".equals(category1)) {
                     record.setEndDate(date1.elementText("year") + "-" + date1.elementText("month"));
                 }
             }
@@ -161,7 +166,7 @@ public class XmlParser {
 
             Element tuple_array = office.element("tuple_array");
             List<Element> tuples = tuple_array.elements("tuple");
-            List<Tuple> tupleList = new ArrayList<Tuple>();
+            List<Tuple> tupleList = new ArrayList<>();
             for (Element tuple : tuples) {
                 Tuple t = new Tuple();
                 t.setContent(tuple.elementText("content"));
@@ -169,10 +174,9 @@ public class XmlParser {
 
                 // unit部分原来只关注level 1部分，现在加入全部unit树
                 List<Element> units = tuple.element("unit_tree").elements("unit");
-                List<String> unitNameList = new ArrayList<String>();
-                List<String> unitRankList = new ArrayList<String>();
+                List<String> unitNameList = new ArrayList<>();
+                List<String> unitRankList = new ArrayList<>();
                 for (Element unit : units) {
-                    //String unitLevel = unit.attributeValue("level");
                     unitNameList.add(unit.elementText("name"));
                     unitRankList.add(unit.elementText("rank"));
                 }
@@ -181,7 +185,7 @@ public class XmlParser {
 
                 Element postArray = tuple.element("post_array");
                 List<Element> posts = postArray.elements("post_entity");
-                List<Post> postList = new ArrayList<Post>();
+                List<Post> postList = new ArrayList<>();
                 for (Element post : posts) {
                     Post p = new Post();
                     p.setName(post.elementText("post_name"));
@@ -208,16 +212,12 @@ public class XmlParser {
         return true;
     }
 
-    public final static boolean isYearLegal(String year) {
-        if (year.equals("-")) // "-" means this year or no data here and will be processed later
+    public static final boolean isYearLegal(String year) {
+        if ("-".equals(year)) // "-" means this year or no data here and will be processed later
             return true;
         Calendar c = Calendar.getInstance();
         int currentYear = c.get(Calendar.YEAR);
         int yearInt = Integer.parseInt(year);
-        if (yearInt > currentYear || yearInt < 1900) {
-            return false;
-        } else {
-            return true;
-        }
+        return  !(yearInt > currentYear || yearInt < 1900);
     }
 }
