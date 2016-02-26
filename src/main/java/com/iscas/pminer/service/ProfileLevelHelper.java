@@ -16,10 +16,6 @@ public class ProfileLevelHelper {
     private static final int LEVEL_TWO = 2;
     private static final int LEVEL_ONE = 1;
 
-    public ProfileLevelHelper(Profile profile) {
-        this.profile = profile;
-    }
-
     /**
      * Get level for profile.
      * @return the level integer value
