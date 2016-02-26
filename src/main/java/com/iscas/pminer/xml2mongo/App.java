@@ -16,6 +16,7 @@ import java.util.Properties;
  * 该程序用于导入xml数据文件到MongoDB数据库
  */
 public class App {
+
     private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws UnknownHostException {
