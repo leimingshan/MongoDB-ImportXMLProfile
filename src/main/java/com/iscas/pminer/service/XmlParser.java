@@ -75,15 +75,16 @@ public class XmlParser {
         for (Element element : date) {
             String category = element.attributeValue("category");
 
-            if (category.equals("birth"))
+            if ("birth".equals(category)) {
                 profile
                     .setBirthDate(element.elementText("year") + "-" + element.elementText("month"));
-            else if (category.equals("party"))
+            } else if ("party".equals(category)) {
                 profile
                     .setPartyDate(element.elementText("year") + "-" + element.elementText("month"));
-            else if (category.equals("work"))
+            } else if ("work".equals(category)) {
                 profile
                     .setWorkDate(element.elementText("year") + "-" + element.elementText("month"));
+            }
         }
 
         //学习记录
@@ -164,8 +165,8 @@ public class XmlParser {
             record.setCity(workPlace.elementText("city"));
             record.setDistrict(workPlace.elementText("district"));
 
-            Element tuple_array = office.element("tuple_array");
-            List<Element> tuples = tuple_array.elements("tuple");
+            Element tupleArray = office.element("tuple_array");
+            List<Element> tuples = tupleArray.elements("tuple");
             List<Tuple> tupleList = new ArrayList<>();
             for (Element tuple : tuples) {
                 Tuple t = new Tuple();

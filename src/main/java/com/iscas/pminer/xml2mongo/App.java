@@ -16,16 +16,16 @@ import java.util.Properties;
  * 该程序用于导入xml数据文件到MongoDB数据库
  */
 public class App {
-    private static final Logger logger = LoggerFactory.getLogger(App.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(App.class);
 
     public static void main(String[] args) throws UnknownHostException {
         System.out.println("PMiner Xml to Mongo App Start！");
 
         MongoDBRiver river = new MongoDBRiver();
 
-        String dataRootPath = null;
+        String dataRootPath;
 
-        String personFolder = null;
+        String personFolder;
 
         if (args.length == 0) {
             // 读取默认配置文件中的路径到dataRootPath
@@ -34,21 +34,20 @@ public class App {
                 Properties rootProps = new Properties();
                 rootProps.load(input);
                 dataRootPath = rootProps.getProperty("PminerData");
-                logger.info("Import data root path: {}", dataRootPath);
+                LOGGER.info("Import data root path: {}", dataRootPath);
                 river.importDataFolder(dataRootPath);
             } catch (IOException e) {
-                logger.info(e.getMessage());
-                e.printStackTrace();
+                LOGGER.info("Read file IOException.", e);
             }
         } else if (args.length == 2) {
-            if (args[0].equals("-d")) { // import data folder
+            if ("-d".equals(args[0])) { // import data folder
                 dataRootPath = args[1];
-                logger.info("Import data root path: {}", dataRootPath);
+                LOGGER.info("Import data root path: {}", dataRootPath);
                 river.importDataFolder(dataRootPath);
                 return;
-            } else if (args[0].equals("-p")) { // import personal folder
+            } else if ("-p".equals(args[0])) { // import personal folder
                 personFolder = args[1];
-                logger.info("Import person folder path: {}", personFolder);
+                LOGGER.info("Import person folder path: {}", personFolder);
                 river.importPersonFolder(personFolder);
                 return;
             }
