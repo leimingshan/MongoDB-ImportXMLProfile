@@ -19,5 +19,9 @@ public class AppTest {
     public void testMain2() throws Exception {
         String[] args2 = {"-d", "test", "test"};
         App.main(args2);
+        String[] args3 = {"-d", "test"};
+        App.main(args3);
+        String[] args4 = {"-p", "test"};
+        App.main(args4);
     }
 }
