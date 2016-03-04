@@ -48,6 +48,10 @@ public class MongoDBRiver {
         // scan data folder which contains many PersonFile and then personFolders
         File dir = new File(dataRootPath);       // data folder
         File[] dirList = dir.listFiles();        // PersonFile_1..n folders
+        if (dirList == null || dirList.length == 0) {
+            LOGGER.error("Error: this is not profile data folder - " + dataRootPath);
+            return;
+        }
         for (int j = 0; j < dirList.length; j++) {
             if (!dirList[j].isDirectory()) {     // dirList[j] should be PersonFile_1 or 2, etc.
                 LOGGER.error("Error: " + dirList[j].getName() + " is not a category folder!");
