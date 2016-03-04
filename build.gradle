@@ -1,17 +1,30 @@
 group 'com.iscas.pminer'
 version '1.0'
 
+buildscript {
+    repositories {
+        mavenCentral()
+        maven { url "https://plugins.gradle.org/m2/" }
+    }
+    dependencies {
+        classpath "org.sonarsource.scanner.gradle:sonarqube-gradle-plugin:1.2"
+    }
+}
+
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: "org.sonarqube"
 
 jacoco {
     toolVersion "0.7.5.201505241946"
 }
 
-sourceCompatibility = 1.7
+sourceCompatibility = 1.8
+targetCompatibility = 1.8
 
 repositories {
     mavenCentral()
+    maven { url "https://plugins.gradle.org/m2/" }
 }
 
 dependencies {
